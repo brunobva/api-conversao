@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apiconversao
+spec:
+  selector:
+    matchLabels:
+      app: apiconversao
+  template:
+    metadata:
+      labels:
+        app: apiconversao
+    spec:
+      containers:
+      - name: apiconversao
+        image: brunomor7/api-conversao:1.0
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+          - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-apiconversao
+spec:
+  selector:
+    app: apiconversao
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 30000
+  type: NodePort
